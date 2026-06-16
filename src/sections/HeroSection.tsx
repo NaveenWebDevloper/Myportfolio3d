@@ -13,7 +13,7 @@ export const HeroSection: React.FC = () => {
         <FadeIn
           delay={0.6}
           y={30}
-          className="w-[280px] sm:w-[360px] md:w-[440px] lg:w-[520px] absolute left-1/2 -translate-x-1/2 top-1/2 -translate-y-1/2 sm:top-auto sm:translate-y-0 sm:bottom-0 pointer-events-none sm:pointer-events-auto"
+          className="w-[240px] min-[400px]:w-[280px] sm:w-[360px] md:w-[440px] lg:w-[520px] absolute left-1/2 -translate-x-1/2 bottom-0 pointer-events-none sm:pointer-events-auto"
         >
           <Magnet
             padding={150}

@@ -42,3 +42,21 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #3E3E3E;
 }
+
+@keyframes marquee-right {
+  0% { transform: translate3d(-33.3333%, 0, 0); }
+  100% { transform: translate3d(0, 0, 0); }
+}
+
+@keyframes marquee-left {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-33.3333%, 0, 0); }
+}
+
+.animate-marquee-right {
+  animation: marquee-right 22s linear infinite;
+}
+
+.animate-marquee-left {
+  animation: marquee-left 22s linear infinite;
+}

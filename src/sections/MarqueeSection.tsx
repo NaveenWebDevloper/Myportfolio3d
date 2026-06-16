@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 
 const ROW1_IMAGES = [
   "/brave_screenshot_www.thedevdale.com.webp",
@@ -21,8 +21,24 @@ export const MarqueeSection: React.FC = () => {
   const track1Ref = useRef<HTMLDivElement>(null);
   const track2Ref = useRef<HTMLDivElement>(null);
   const sectionTopRef = useRef<number>(0);
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (isMobile) {
+      if (track1Ref.current) track1Ref.current.style.transform = '';
+      if (track2Ref.current) track2Ref.current.style.transform = '';
+      return;
+    }
+
     const getElementOffset = (element: HTMLElement) => {
       let top = 0;
       let el: HTMLElement | null = element;
@@ -62,7 +78,7 @@ export const MarqueeSection: React.FC = () => {
       window.removeEventListener('scroll', handleScroll);
       window.removeEventListener('resize', updateSectionTop);
     };
-  }, []);
+  }, [isMobile]);
 
   const row1Tripled = [...ROW1_IMAGES, ...ROW1_IMAGES, ...ROW1_IMAGES];
   const row2Tripled = [...ROW2_IMAGES, ...ROW2_IMAGES, ...ROW2_IMAGES];
@@ -77,9 +93,9 @@ export const MarqueeSection: React.FC = () => {
         <div className="overflow-hidden w-full">
           <div 
             ref={track1Ref}
-            className="flex gap-3 w-max"
+            className={`flex gap-3 w-max ${isMobile ? 'animate-marquee-right' : ''}`}
             style={{ 
-              willChange: 'transform'
+              willChange: isMobile ? 'auto' : 'transform'
             }}
           >
             {row1Tripled.map((url, i) => (
@@ -98,9 +114,9 @@ export const MarqueeSection: React.FC = () => {
         <div className="overflow-hidden w-full">
           <div 
             ref={track2Ref}
-            className="flex gap-3 w-max"
+            className={`flex gap-3 w-max ${isMobile ? 'animate-marquee-left' : ''}`}
             style={{ 
-              willChange: 'transform'
+              willChange: isMobile ? 'auto' : 'transform'
             }}
           >
             {row2Tripled.map((url, i) => (

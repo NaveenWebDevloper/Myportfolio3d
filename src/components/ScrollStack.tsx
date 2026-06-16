@@ -137,8 +137,8 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
 
     isUpdatingRef.current = true;
 
-    // Reset styles on mobile screens (width < 768px) to disable sticky stacking
-    if (window.innerWidth < 768) {
+    // Reset styles on mobile/tablet screens (width < 1024px) to disable sticky stacking
+    if (window.innerWidth < 1024) {
       cardsRef.current.forEach(card => {
         if (card) {
           card.style.transform = '';
@@ -318,10 +318,19 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     cardsRef.current = cards;
     const transformsCache = lastTransformsRef.current;
 
-    cards.forEach((card, i) => {
-      if (i < cards.length - 1) {
-        card.style.marginBottom = `${itemDistance}px`;
-      }
+    const applyMargins = () => {
+      const currentDistance = window.innerWidth < 1024 ? 40 : itemDistance;
+      cards.forEach((card, i) => {
+        if (i < cards.length - 1) {
+          card.style.marginBottom = `${currentDistance}px`;
+        } else {
+          card.style.marginBottom = '';
+        }
+      });
+    };
+
+    applyMargins();
+    cards.forEach((card) => {
       card.style.willChange = 'transform, filter';
       card.style.transformOrigin = 'top center';
       card.style.backfaceVisibility = 'hidden';
@@ -336,6 +345,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     updateCardTransforms();
 
     const handleResize = () => {
+      applyMargins();
       measureLayout();
       updateCardTransforms();
     };
@@ -375,7 +385,7 @@ const ScrollStack: React.FC<ScrollStackProps> = ({
     return (
       <div className={`w-full ${className}`.trim()}>
         {children}
-        <div className="scroll-stack-end w-full h-0 md:h-[70vh]" />
+        <div className="scroll-stack-end w-full h-0 lg:h-[70vh]" />
       </div>
     );
   }

@@ -402,8 +402,9 @@ const PillNav: React.FC<PillNavProps> = ({
                   style={defaultStyle}
                   onMouseEnter={hoverIn}
                   onMouseLeave={hoverOut}
-                  onClick={() => {
-                    setIsMobileMenuOpen(false);
+                  onClick={(e) => {
+                    e.preventDefault();
+                    toggleMobileMenu();
                     // Standard smooth click to scroll
                     const targetEl = document.querySelector(item.href);
                     if (targetEl) {
